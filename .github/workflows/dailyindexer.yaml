@@ -1,8 +1,19 @@
-- name: GSC Indexer
-  uses: toolsura/gsc-indexer@v1
-  with:
-    service_account_json: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
-    site: https://ferdinandwar.github.io/
-    sitemap: https://ferdinandwar.github.io/sitemap.xml
-    delay: 100s
-    quiet: false
+name: Daily GSC Indexer
+
+on:
+  schedule:
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GSC Indexer
+        uses: toolsura/gsc-indexer@v1
+        with:
+          service_account_json: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+          site: https://ferdinandwar.github.io/
+          sitemap: https://ferdinandwar.github.io/sitemap.xml
+          delay: 100s
+          quiet: false
