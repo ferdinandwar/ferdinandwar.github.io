@@ -1,0 +1,49 @@
+name: Sitemap Generator
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  generate-sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate sitemap
+        run: |
+          # Find all HTML files in root and /database/ directories
+          HTML_FILES=$(find . -maxdepth 1 -name "*.html" -o -path "./database/*.html" | sort)
+          
+          # Start sitemap XML
+          cat > sitemap.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+          EOF
+          
+          # Add each HTML file to sitemap
+          while IFS= read -r file; do
+            # Remove leading ./ from path
+            file_path="${file#./}"
+            # Skip sitemap.xml itself
+            if [[ "$file_path" != "sitemap.xml" ]]; then
+              # Create URL by replacing backslashes and appending to domain
+              url_path="${file_path%.html}"
+              echo "          <url><loc>https://ferdinandwar.github.io/${url_path}</loc></url>" >> sitemap.xml
+            fi
+          done <<< "$HTML_FILES"
+          
+          # Close sitemap XML
+          cat >> sitemap.xml << 'EOF'
+          </urlset>
+          EOF
+
+      - name: Commit sitemap
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add sitemap.xml
+          git commit -m "Update sitemap.xml" || echo "No changes to commit"
+          git push
