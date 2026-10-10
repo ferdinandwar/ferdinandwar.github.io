@@ -1,19 +1,8 @@
 - name: GSC Indexer
   uses: toolsura/gsc-indexer@v1
   with:
-    # Service-account JSON key (its CONTENTS, not a path). Written to a temp file at chmod 600.
     service_account_json: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
-    
-    # GSC property / site URL.
     site: https://ferdinandwar.github.io/
-    
-    # Newline-separated list of URLs to inspect (passed as positional args).
-    urls: |
-      https://ferdinandwar.github.io/
-      https://ferdinandwar.github.io/database
-    
-    # Delay between requests (Go duration, e.g. 1s, 10s).
+    sitemap: https://ferdinandwar.github.io/sitemap.xml
     delay: 100s
-    
-    # Quiet mode: progress line + summary + errors only.
     quiet: false
