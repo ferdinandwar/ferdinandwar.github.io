@@ -1,0 +1,31 @@
+<!-- #######  THIS IS A COMMENT - Visible only in the source editor #########-->
+<html>
+
+<head>
+    <style>
+        * {
+            font-family: "MS Gothic", "ＭＳ ゴシック", Arial, serif;
+            background: white;
+
+
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        const nameInput = document.querySelector('#name');
+        nameInput.addEventListener('keydown', async e => {
+            if (e.key !== 'Enter') return;
+            const name = nameInput.value.trim().toLowerCase();
+            const data = await fetch('/database/names.json').then(r => r.json());
+            if (data.names[name]) location.href = data.names[name];
+        });
+    </script>
+    <h1 style="text-align: center;"><img src="https://html5-editor.net/tinymce/plugins/emoticons/img/smiley-cool.gif" alt="cool" />&nbsp;Ferdinand War's Website!&nbsp;<img src="https://html5-editor.net/tinymce/plugins/emoticons/img/smiley-cool.gif" alt="cool" /></h1>
+    <p style="text-align: center;">&nbsp;Welcome to my website, where my wacky projects live.&nbsp;<br />You can use them however you want, as long as you follow the license rules.</p>
+    <p style="text-align: center;">&nbsp;</p>
+    <h3 style="text-align: left; padding-left: 20%;">Name searcher:&nbsp;<input id=name type="text" placeholder="Name" /></h3>
+</body>
+
+</html>
