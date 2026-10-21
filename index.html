@@ -1,4 +1,5 @@
-<!-- #######  THIS IS A COMMENT - Visible only in the source editor #########-->
+<!-- ####### THIS IS A COMMENT - Visible only in the source editor #########-->
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -7,32 +8,62 @@
     <style>
         * {
             font-family: "MS Gothic", "ＭＳ ゴシック", Arial, serif;
+            box-sizing: border-box;
+        }
+
+        body {
             background: white;
-
-
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
 
 <body>
-    <h1 style="text-align: center;"><img src="https://html5-editor.net/tinymce/plugins/emoticons/img/smiley-cool.gif" alt="cool" />&nbsp;Ferdinand War's Website!&nbsp;<img src="https://html5-editor.net/tinymce/plugins/emoticons/img/smiley-cool.gif" alt="cool" /></h1>
-    <p style="text-align: center;">&nbsp;Welcome to my website, where my wacky projects live.&nbsp;<br />You can use them however you want, as long as you follow the license rules.</p>
+    <h1 style="text-align: center;">
+        <img src="./images/cowboy.gif" alt="cool" />
+        &nbsp;Ferdinand War's Website!&nbsp;
+        <img src="./images/cowboy.gif" alt="cool" />
+    </h1>
+
+    <p style="text-align: center;">
+        &nbsp;Welcome to my website, where my wacky projects live.&nbsp;<br />
+        You can use them however you want, as long as you follow the license rules.
+    </p>
+
     <p style="text-align: center;">&nbsp;</p>
-    <h3 style="text-align: left; padding-left: 20%;">Name searcher:&nbsp;<input id=name type="text" placeholder="Name" /></h3>
-    <hr>
+
+    <h3 style="text-align: left; padding-left: 20%;">
+        Name searcher:&nbsp;<input id="name" type="text" placeholder="Name" />
+    </h3>
+
+    <hr style="width: 60%; margin-left: 20%;">
+
     <p style="text-align: left; padding-left: 20%;">Here are some of my <em>"About me"</em> pages:</p>
-    <h3 style="text-align: left; padding-left: 20%;"><a href="/About me/subjects.html">Subjects that I know of</a></h3>
+    <h3 style="text-align: left; padding-left: 20%;">
+        <a href="/About%20me/subjects.html">Subjects that I know of</a>
+    </h3>
+
     <script>
         const nameInput = document.querySelector('#name');
         nameInput.addEventListener('keydown', async e => {
             if (e.key !== 'Enter') return;
             const name = nameInput.value.trim().toLowerCase();
-            const data = await fetch('/database/names.json').then(r => r.json());
-            (data.names[name])?location.href=data.names[name]:location.href="https://ferdinandwar.github.io/database/unknown.html";
+            if (!name) return;
+            try {
+                const response = await fetch('/database/names.json');
+                const data = await response.json();
+                if (data.names && data.names[name]) {
+                    location.href = data.names[name];
+                } else {
+                    location.href = "https://ferdinandwar.github.io/database/unknown.html";
+                }
+            } catch (error) {
+                console.error("Error fetching the name database:", error);
+                location.href = "https://ferdinandwar.github.io/database/unknown.html";
+            }
         });
     </script>
-
-
 </body>
 
 </html>
